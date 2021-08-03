@@ -1,0 +1,20 @@
+{
+    "name": "3j_pam2_2021",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "npm i -g @angular/core @angular/cli && ng version",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dreehgoncalves/3j_pam2_2021.git"
+    },
+    "author": "Andressa Gonçalves",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/dreehgoncalves/3j_pam2_2021/issues"
+    },
+    "homepage": "https://github.com/dreehgoncalves/3j_pam2_2021#readme"
+}
