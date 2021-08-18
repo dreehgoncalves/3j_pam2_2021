@@ -16,5 +16,10 @@
     "bugs": {
         "url": "https://github.com/dreehgoncalves/3j_pam2_2021/issues"
     },
-    "homepage": "https://github.com/dreehgoncalves/3j_pam2_2021#readme"
+    "homepage": "https://github.com/dreehgoncalves/3j_pam2_2021#readme",
+    "dependencies": {
+        "g": "^2.0.1",
+        "mysql2": "^2.3.0",
+        "nodemon": "^2.0.12"
+    }
 }
