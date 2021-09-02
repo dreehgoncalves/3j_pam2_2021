@@ -9,12 +9,32 @@ const banco = mysql.createPool({
     port: "3306",
 });
 
-servidor.delete("/cliente/:id", (req, res, next) => {
-    let id = req.params.id
-
-    return res.status(200).send({
-        Verbo: 'delete',
-        Mensagem: `Id capturado ${id}`
+const bodyParser = require('body-parser')
+servidor.use(bodyParser.urlencoded({ extended: false }))
+servidor.use(bodyParser.json())
+servidor.post("/cliente", (req, res, next) => {
+    let body = req.body
+    const QUERY = `INSERT INTO clientes (nome, login, senha) VALUES('${body.nome}', '${body.login}', '${body.senha}')`
+    banco.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                Mensagem: "Erro no servidor",
+                Detalhes: error
+            })
+        }
+        conn.query(QUERY, (error, resultado) => {
+            conn.release()
+            if (error) {
+                return res.status(500).send({
+                    Mensagem: "Erro no servidor",
+                    Detalhes: error
+                })
+            }
+            return res.status(200).send({
+                Verbo: "post",
+                Mensagem: "Cadastro realizado com sucesso!",
+            })
+        })
     })
 })
 
