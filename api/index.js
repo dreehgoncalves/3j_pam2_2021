@@ -45,10 +45,34 @@ servidor.post("/cliente", (req, res, next) => {
 
 servidor.delete("/cliente/:id", (req, res, next) => {
     let id = req.params.id
+    const QUERY = `DELETE FROM clientes WHERE cliente_id=${id}`
 
-    return res.status(200).send({
-        Verbo: 'delete',
-        Mensagem: `Id capturado ${id}`
+    banco.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                messagem: 'Erro no servidor',
+                detalhes: error
+            })
+        }
+        conn.query(QUERY, (error, resultado) => {
+            conn.release()
+
+            if (error) {
+                return res.status(500).send({
+                    mensagem: `Não foi possível excluir o cliente ${id}`,
+                    detalhes: error
+                })
+            }
+            if (resultado.affectedRows > 0) {
+                return res.status(200).send({
+                    mensagem: `Cliente ${id} excluído com sucesso`
+                })
+            } else {
+                return res.status(200).send({
+                    mensagem: `Cliente ${id} não existe no banco de dados`
+                })
+            }
+        })
     })
 })
 
