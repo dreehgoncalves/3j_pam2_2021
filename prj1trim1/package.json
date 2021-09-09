@@ -18,6 +18,9 @@
     },
     "homepage": "https://github.com/dreehgoncalves/3j_pam2_2021#readme",
     "dependencies": {
+        "@angular-devkit/architect": "^0.1202.3",
+        "@angular-devkit/build-angular": "^12.2.5",
+        "@angular/cli": "^12.2.5",
         "@popperjs/core": "^2.10.1",
         "bootstrap": "^5.1.1",
         "g": "^2.0.1",
