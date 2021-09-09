@@ -18,7 +18,10 @@
     },
     "homepage": "https://github.com/dreehgoncalves/3j_pam2_2021#readme",
     "dependencies": {
+        "@popperjs/core": "^2.10.1",
+        "bootstrap": "^5.1.1",
         "g": "^2.0.1",
+        "jquery": "^3.6.0",
         "mysql2": "^2.3.0",
         "nodemon": "^2.0.12"
     }
