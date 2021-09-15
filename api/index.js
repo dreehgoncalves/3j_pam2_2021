@@ -77,11 +77,30 @@ servidor.delete("/cliente/:id", (req, res, next) => {
 })
 
 servidor.patch("/cliente/:id", (req, res, next) => {
-    let id = req.params.id
+    let id = req.params.id;
+    let body = req.body;
+    const QUERY = `UPDATE clientes SET nome = '${body.nome}, login = '${body.login}, senha = '${body.senha}' WHERE cliente = '${body.cliente}'`;
 
-    return res.status(200).send({
-        Verbo: 'patch',
-        Mensagem: `Id capturado ${id}`
+    banco.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                messagem: "Erro no servidor",
+                detalhes: error,
+            })
+        }
+        conn.query(QUERY, (error, resultado) => {
+            conn.release();
+
+            if (error) {
+                return res.status(500).send({
+                    mensagem: `Erro ao atualizar o cadastro`,
+                    detalhes: error,
+                })
+            }
+            return res.status(200).send({
+                mensagem: `Cliente atualizado com sucesso`
+            })
+        })
     })
 })
 
@@ -93,23 +112,6 @@ servidor.get("/cliente/:id", (req, res, next) => {
         Mensagem: `Id capturado ${id}`
     })
 })
-
-servidor.get("/testarconexao", (req, res, next) => {
-    banco.getConnection((error, conn) => {
-        if (error) {
-            return res.status(500).send({
-                Erro: "Erro no servidor",
-                Detalhes: error,
-            });
-        }
-
-        conn.release();
-
-        return res.status(200).send({
-            Mensagem: "Conexão estabelecida com sucesso",
-        });
-    });
-});
 
 servidor.get("/clientes", (req, res, next) => {
     const QUERY = 'SELECT * FROM clientes ORDER BY nome'
@@ -169,6 +171,56 @@ servidor.get("/clientes/:criterio", (req, res, next) => {
         })
     })
 })
+
+servidor.get("/clientes/:id_inicial/:id_final", (req, res) => {
+    let id1 = req.params.id_inicial
+    let id2 = req.params.id_final
+    const QUERY = `SELECT * FROM clientes WHERE cliente_id >= ${id1} AND cliente_id <= ${id2} ORDER BY cliente_id`
+
+    banco.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                Erro: "Não foi possível atender à solicitação",
+                Detalhes: error
+            })
+        }
+
+        conn.query(QUERY, (error, resultado) => {
+            conn.release()
+
+            if (error) {
+                return res.status(500).send({
+                    Erro: "Não foi possível atender à solicitação",
+                    Detalhes: error
+                })
+            }
+
+            return res.status(200).send({
+                Mensagem: "Consulta realizada com sucesso",
+                Dados: resultado
+            })
+        })
+    })
+})
+
+/* teste de conexão */
+
+servidor.get("/testarconexao", (req, res, next) => {
+    banco.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                Erro: "Erro no servidor",
+                Detalhes: error,
+            });
+        }
+
+        conn.release();
+
+        return res.status(200).send({
+            Mensagem: "Conexão estabelecida com sucesso",
+        });
+    });
+});
 
 servidor.get("/", (req, res, next) => {
     return res.send({
